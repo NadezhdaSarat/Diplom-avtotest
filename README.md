@@ -10,6 +10,12 @@ https://api.kinopoisk.dev
 запуск только API-тестов,
 запуск всех тестов.
 
+команды для запуска тестов
+
+pytest test_ui.py --alluredir allure-result
+pytest test_api.py --alluredir allure-result
+pytest --alluredir allure-result
+
 Подключены зависимости:
 selenium,
 requests,
@@ -33,3 +39,4 @@ allure serve allure-results
 
 ссылка на финальный проект по ручному тестированию
 https://na-sa-78.yonote.ru/share/2cb3bc8f-4225-4f8f-b530-554ceee5adfa
+
