@@ -31,3 +31,5 @@ python -m pytest --alluredir allure-result
 Команда ниже запускает Allure и конвертирует результаты теста в отчет:
 allure serve allure-results
 
+ссылка на финальный проект по ручному тестированию
+https://na-sa-78.yonote.ru/share/2cb3bc8f-4225-4f8f-b530-554ceee5adfa
