@@ -1,74 +1,69 @@
 import requests
 import allure
+from config import HEADERS, base_api_url
 
-key = "R13T4BY-PC243PX-MBWKD3V-ZAX56RZ"
 
 @allure.title("Поиск фильмов по 2025 году")
 @allure.description("Ввод год")
 @allure.severity("critical")
 def test_movies_2025():
     with allure.step("отправить запрос на фильмы 2025г"):
-        HEADERS = {
-            "accept": "application/json",
-            "X-API-KEY": key
-        }
-        response = requests.get("https://api.kinopoisk.dev/v1.4/movie?page=1&limit=10&type=movie&year=2025",
-                          headers=HEADERS)
+        response = requests.get(base_api_url+"movie?page=1&limit=10&type=movie&year=2025",
+                                headers=HEADERS)
     with allure.step("проверить код ответа"):
         assert response.status_code == 200
+    with allure.step("проверить тело ответа"):
+        assert response.json()["docs"][0]["name"] == "Кинолюбители"
 
-@allure.title("Поиск кинопремьер по декабрю 2025 года")
-@allure.description("Ввод год и месяц")
+
+@allure.title("Поиск фильма по id")
+@allure.description("Ввод id")
 @allure.severity("critical")
-def test_movies_premieres_2025():
-    with allure.step("отправить запрос на кинопремьеры декабря 2025г"):
-          HEADERS = {
-            "accept": "application/json",
-            "X-API-KEY": key
-          }
-          response = requests.get("https://api.kinopoisk.dev/v2.2/films/premieres?year=2025&month=DECEMBER",
-                          headers=HEADERS)
+def test_movies_id():
+    with allure.step("отправить запрос фильма по id"):
+        response = requests.get(base_api_url+"movie/1355059",
+                                headers=HEADERS)
     with allure.step("проверить код ответа"):
-          assert response.status_code == 200
+        assert response.status_code == 200
+    with allure.step("проверить тело ответа"):
+        assert response.json()["name"] == "Беспринципные"
+
 
 @allure.title("Поиск актера по имени и фамилии")
-@allure.description("Ввод ИФ, страница")
+@allure.description("Ввод имени и фамилии")
 @allure.severity("critical")
 def test_movies_actor():
-    with allure.step("отправить запрос на актера"):
-          HEADERS = {
-            "accept": "application/json",
-            "X-API-KEY": key
-          }
-          response = requests.get("https://api.kinopoisk.dev/v1/persons?name=Roman%20Kurtsyn&page=2",
-                          headers=HEADERS)
-    with allure.step("проверить код ответа"):
-          assert response.status_code == 200
-
-@allure.title("Поиск данных об api ключе")
-@allure.description("Ввод api key")
-@allure.severity("critical")
-def test_api_key():
-    with allure.step("отправить запрос на апи ключ"):
-          HEADERS = {
-            "accept": "application/json",
-            "X-API-KEY": key
-          }
-          response = requests.get("https://api.kinopoisk.dev/v1/api_keys/R13T4BY-PC243PX-MBWKD3V-ZAX56RZ",
-                          headers=HEADERS)
+    with allure.step("отправить запрос на актера Джонни Депп"):
+        response = requests.get(base_api_url+"/person/search?query='Джонни Депп'",
+                                headers=HEADERS)
     with allure.step("проверить код ответа"):
         assert response.status_code == 200
+    with allure.step("проверить тело ответа"):
+        assert response.json()["docs"][0]["name"] == "Джонни Депп"
 
-@allure.title("Поиск медиа новостей с сайта")
-@allure.description("Ввод номера страницы")
+
+@allure.title("Поиск на названию фильма")
+@allure.description("Ввод название фильма")
+@allure.severity("critical")
+def test_api_key():
+    with allure.step("отправить запрос на название фильма 'Форсаж'"):
+        response = requests.get(base_api_url+"/movie/search?page=1&limit=10&query=Форсаж",
+                                headers=HEADERS)
+    with allure.step("проверить код ответа"):
+        assert response.status_code == 200
+    with allure.step("проверить тело ответа"):
+        assert response.json()["docs"][0]["name"] == "Форсаж"
+
+
+@allure.title("Поиск списка жанров")
+@allure.description("Ввод жанра")
 @allure.severity("critical")
 def test_media_posts():
-    with allure.step("отправить запрос на медиа новости"):
-          HEADERS = {
-            "accept": "application/json",
-            "X-API-KEY": key
-          }
-          response = requests.get("https://api.kinopoisk.dev/v1/media_posts?page=3",
-                          headers=HEADERS)
+    with allure.step("отправить запрос на жанр комедия"):
+        response = requests.get(base_api_url+"/movie?year=2020&genres.name=комедия",
+                                headers=HEADERS)
     with allure.step("проверить код ответа"):
-          assert response.status_code == 200
+        assert response.status_code == 200
+    with allure.step("проверить тело ответа"):
+        assert response.json()[
+            "docs"][0]["alternativeName"] == "Christmas Zombies"
