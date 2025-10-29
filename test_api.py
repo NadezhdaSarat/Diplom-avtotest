@@ -34,7 +34,7 @@ def test_movies_id():
 @allure.severity("critical")
 def test_movies_actor():
     with allure.step("отправить запрос на актера Джонни Депп"):
-        response = requests.get(base_api_url+"/person/search?query='Джонни Депп'",
+        response = requests.get(base_api_url+"person/search?query='Джонни Депп'",
                                 headers=HEADERS)
     with allure.step("проверить код ответа"):
         assert response.status_code == 200
@@ -45,9 +45,9 @@ def test_movies_actor():
 @allure.title("Поиск на названию фильма")
 @allure.description("Ввод название фильма")
 @allure.severity("critical")
-def test_api_key():
+def test_movies_name():
     with allure.step("отправить запрос на название фильма 'Форсаж'"):
-        response = requests.get(base_api_url+"/movie/search?page=1&limit=10&query=Форсаж",
+        response = requests.get(base_api_url+"movie/search?page=1&limit=10&query=Форсаж",
                                 headers=HEADERS)
     with allure.step("проверить код ответа"):
         assert response.status_code == 200
@@ -58,9 +58,9 @@ def test_api_key():
 @allure.title("Поиск списка жанров")
 @allure.description("Ввод жанра")
 @allure.severity("critical")
-def test_media_posts():
+def test_movies_style():
     with allure.step("отправить запрос на жанр комедия"):
-        response = requests.get(base_api_url+"/movie?year=2020&genres.name=комедия",
+        response = requests.get(base_api_url+"movie?year=2020&genres.name=комедия",
                                 headers=HEADERS)
     with allure.step("проверить код ответа"):
         assert response.status_code == 200
